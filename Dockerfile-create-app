@@ -1,0 +1,25 @@
+# Base image
+FROM node:lts-alpine
+
+# Set Author
+LABEL maintainer="Abhijeet Dange <abhijeet.dange@infobeans.com>"
+
+# Set current working directory
+WORKDIR /app
+
+RUN yarn global add @vue/cli
+
+## Create image
+## docker build -t vueappimage -f Dockerfile-create-app
+
+# Verify Image is created or not
+## docker image
+
+## Run 
+## docker run -itd -v ${PWD}:app/ --name newvueapp vueappimage 
+
+## To install/add any new package in running container:-
+# docker exec -it <container-id 9d5a9797ba9d> vue create my-project
+
+## default user is root files and folders created via docker
+sudo chown -R $USER:$(id -gn $USER) ./*

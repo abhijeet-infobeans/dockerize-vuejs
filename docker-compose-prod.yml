@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  my-app-prod:
+    container_name: vueapp-prod-image
+    build:
+      context: .
+      dockerfile: Dockerfile-build-app
+    ports:
+      - '8080:80'

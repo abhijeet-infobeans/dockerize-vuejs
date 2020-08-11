@@ -1,0 +1,40 @@
+# Base image
+FROM node:lts-alpine as build
+
+# Set Author
+LABEL maintainer="Abhijeet Dange <abhijeet.dange@infobeans.com>"
+
+# Set current working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN yarn install
+
+###### additional from base file ########
+# add app
+COPY . /app
+
+#generate build
+RUN yarn build
+
+###################################################
+################## Production #####################
+###################################################
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Run nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+## Create image
+## docker build -t vueapp-prod-image -f Dockerfile-build-app .
+
+## Run 
+## docker run -itd -p 8080:80 vueapp-prod-image
